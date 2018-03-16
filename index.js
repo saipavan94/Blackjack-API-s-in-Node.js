@@ -126,4 +126,4 @@ function random_item(items)
 return items[Math.floor(Math.random()*items.length)];
 
 }
-app.listen(3988, () => console.log('Example app listening on port 3988!'))
+app.listen(process.env.PORT || 3988, () => console.log('Example app listening on port 3988!'))
