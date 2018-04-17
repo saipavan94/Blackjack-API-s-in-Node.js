@@ -196,7 +196,9 @@ app.get('/checkResult/:ninerId', (req, res) => {
   }
 });
 
-
+app.get('/winners', (req, res) => {
+  res.json(winners);
+}
 function reset(){
   standArray = []
   bustedArray = []
