@@ -1,6 +1,6 @@
 const express = require('express')
 const app = express()
-
+let port = process.env.PORT || 3900;
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
@@ -13,7 +13,7 @@ Array.prototype.max = function() {
 Array.prototype.min = function() {
   return Math.min.apply(null, this);
 };
-
+let winners = []
 let userObj = {}
 let dealerTotal = 0;
 let d_first;
@@ -161,8 +161,12 @@ app.get('/stand/:ninerId', (req, res) => {
 app.get('/checkResult/:ninerId', (req, res) => {
   if (standArray.length + bustedArray.length == 4) {
     if (standArray.length  == 0 ) {
-      res.send("No winner");
+      winners.push("No winner");
+      reset();
+         res.send("No winner");
     }else if (bustedArray.length == 4) {
+      winners.push("No winner")
+      reset();
         res.send("No winner");
     }else {
       let maxVal = standArray.max();
@@ -173,13 +177,18 @@ app.get('/checkResult/:ninerId', (req, res) => {
         }
       }
       if (count > 1) {
+        winners.push("Drawn");
+        reset();
         res.send("match drawn");
+
       }else{
         console.log(maxVal,standIndexArray);
         // check if two players have same total
         let playerId = standArray.indexOf(maxVal);
         let winner = standIndexArray[playerId]
-        res.send("player "+winner+ " Won");  
+        winners.push("player "+winner+ " Won");
+        reset();
+        res.send("player "+winner+ " Won");
       }
     }
   }else {
@@ -187,10 +196,18 @@ app.get('/checkResult/:ninerId', (req, res) => {
   }
 });
 
+
+function reset(){
+  standArray = []
+  bustedArray = []
+  standIndexArray = []
+  players = {};
+  userObj = {}
+}
 function random_item(items)
 {
 
 return items[Math.floor(Math.random()*items.length)];
 
 }
-app.listen(3988, () => console.log('Example app listening on port 3988!'))
+app.listen(port, () => console.log('Example app listening on port 3900!'))
