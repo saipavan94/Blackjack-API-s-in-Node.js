@@ -206,6 +206,8 @@ function reset(){
   standIndexArray = []
   players = {};
   userObj = {}
+  playerCount = 0
+  dealerTotal= 0
 }
 function random_item(items)
 {
